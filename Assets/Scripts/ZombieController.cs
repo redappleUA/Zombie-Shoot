@@ -65,7 +65,7 @@ public class ZombieController : MonoBehaviour
                         if (hasStopped)
                             hasStopped = false;
 
-                        if (hit.collider.CompareTag("Player"))
+                        //if (hit.collider.CompareTag("Player"))
                             Attack();
                     }
                 }
