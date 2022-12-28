@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private List<GameObject> zombies = new List<GameObject>();
     [SerializeField] private Wave[] waves;
 
-    private List<GameObject> spawnedZombie;
+    private List<GameObject> spawnedZombie = new();
     private int currentWave;
     private SpawnState state = SpawnState.Counting;
 
@@ -50,12 +50,20 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < wave.enemiesAmount; i++)
         {
-            spawnedZombie.Add(Instantiate(zombies[Random.Range(0, zombies.Count)], 
-                spawners[Random.Range(0, spawners.Count)].transform.position, Quaternion.identity));
+            SpawnZombie();
             yield return new WaitForSeconds(wave.delay);
         }
         state = SpawnState.Waiting;
         yield break;
+    }
+
+#warning FIX
+    void SpawnZombie()
+    {
+        var newZombie = Instantiate(zombies[Random.Range(0, zombies.Count)],
+                spawners[Random.Range(0, spawners.Count)].transform.position, Quaternion.identity);
+        Debug.Log(currentWave);
+        spawnedZombie.Add(newZombie);
     }
 
     bool EnemiesAreDead()
@@ -71,11 +79,10 @@ public class Spawner : MonoBehaviour
     }
 
     private void ComleteWave()
-    {
-        Debug.LogWarning("Wave comleted");
+    {   
         waveCountdown = timeBetweenWaves;
 
-        if (currentWave + 1 > waves.Length - 1)
+        if (currentWave + 1 > waves.Length)
         {
             currentWave = 0;
             Debug.LogWarning("Wave comleted");
