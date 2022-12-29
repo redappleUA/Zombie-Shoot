@@ -13,9 +13,10 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float waveCountdown = 0;
 
     [SerializeField] private List<GameObject> zombies = new List<GameObject>();
-    [SerializeField] private Wave[] waves;
+    public List<Wave> waves = new ();
 
-    private List<GameObject> spawnedZombie = new();
+    public List<GameObject> killedZombies { get; private set; } = new();
+    private List<GameObject> spawnedZombies = new();
     private int currentWave;
     private SpawnState state = SpawnState.Counting;
 
@@ -35,6 +36,7 @@ public class Spawner : MonoBehaviour
 
         if(waveCountdown <= 0)
         {
+            Debug.Log("Spawning");
             if (state != SpawnState.Spawning)
             {
                 StartCoroutine(SpawnWave(waves[currentWave]));
@@ -57,24 +59,32 @@ public class Spawner : MonoBehaviour
         yield break;
     }
 
-#warning FIX
     void SpawnZombie()
     {
         var newZombie = Instantiate(zombies[Random.Range(0, zombies.Count)],
                 spawners[Random.Range(0, spawners.Count)].transform.position, Quaternion.identity);
-        Debug.Log(currentWave);
-        spawnedZombie.Add(newZombie);
+        Debug.Log(currentWave + " spawned");
+        spawnedZombies.Add(newZombie);
     }
 
     bool EnemiesAreDead()
     {
         int i = 0;
-        foreach(var zombie in spawnedZombie)
+        foreach(var zombie in spawnedZombies)
         {
-            if (zombie.GetComponent<Health>().IsAlive())
+            if (!zombie.GetComponent<Health>().IsAlive())
+            {
                 i++;
+                foreach(var zombie2 in killedZombies)
+                {
+                    if(zombie != zombie2) 
+                        killedZombies.Add(zombie);
+                }
+            }
             else return false;
         }
+        Debug.LogWarning("Dead");
+        spawnedZombies.Clear();
         return true;
     }
 
@@ -82,11 +92,16 @@ public class Spawner : MonoBehaviour
     {   
         waveCountdown = timeBetweenWaves;
 
-        if (currentWave + 1 > waves.Length)
+        if (currentWave + 1 > waves.Count)
         {
-            currentWave = 0;
-            Debug.LogWarning("Wave comleted");
+            Debug.LogWarning("All waves comleted");
+            waves.Clear();
         }
-        else currentWave++;
+        else
+        {
+            state = SpawnState.Counting;
+            Debug.LogWarning("Wave comleted");
+            currentWave++;
+        }
     }
 }

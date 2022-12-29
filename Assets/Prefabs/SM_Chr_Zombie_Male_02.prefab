@@ -1114,7 +1114,6 @@ GameObject:
   - component: {fileID: 6327817469032530698}
   - component: {fileID: 6327817469032530738}
   - component: {fileID: 6327817469032530739}
-  - component: {fileID: 6327817469032530736}
   - component: {fileID: 6327817469032530737}
   - component: {fileID: 6327817469032530702}
   - component: {fileID: 6327817469032530703}
@@ -1266,35 +1265,6 @@ MonoBehaviour:
   m_RequireMovement: 1
   m_FixedInterval: 0.3
   m_MinBobInterval: 0.2
---- !u!114 &6327817469032530736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6328778623686954882}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2473f4d1200d65d4e9388687553497ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_States:
-  - m_Name: Default
-    m_Preset: {fileID: 0}
-    m_BlockList: []
-    m_Default: 1
-  m_PositioningMode: 1
-  m_Grouping: -1
-  m_MinRespawnTime: 2
-  m_MaxRespawnTime: 3
-  m_ScheduleRespawnOnDeath: 1
-  m_ScheduleRespawnOnDisable: 1
-  m_RespawnAudioClipSet:
-    m_AudioConfig: {fileID: 0}
-    m_AudioClips: []
-  m_OnRespawnEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6327817469032530737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6210,6 +6180,7 @@ GameObject:
   - component: {fileID: 6327817469938109078}
   - component: {fileID: 6327817469938109076}
   - component: {fileID: 6327817469938109079}
+  - component: {fileID: 8435633027954142610}
   m_Layer: 30
   m_Name: Shoulder_R
   m_TagString: Untagged
@@ -6309,6 +6280,18 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!114 &8435633027954142610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6329406468562760258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5b509c6bf35b14abfd63810cf03f5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6329423475749507370
 GameObject:
   m_ObjectHideFlags: 0
@@ -6676,7 +6659,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6329482096429140288}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.09811639
   m_Height: 0.49058193

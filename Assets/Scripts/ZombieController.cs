@@ -37,6 +37,7 @@ public class ZombieController : MonoBehaviour
         z_lastHealth = z_health.HealthValue;
     }
 
+#warning FIX RAYCAST
     private void MoveToTarget()
     {
         float stopLength = Vector3.Distance(target.position, transform.position);
@@ -49,7 +50,6 @@ public class ZombieController : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit))
         {
-            Debug.DrawRay(transform.position, transform.forward);
             if (stopLength <= agent.stoppingDistance)
             {
                 if (m_health.HealthValue != 0)
@@ -92,8 +92,13 @@ public class ZombieController : MonoBehaviour
         anim.SetTrigger("Attack");
     }
 
-    public void Hit() => target.GetComponent<Health>().Damage(10);
+    public void Hit()
+    {
+        if(gameObject.GetComponent<Health>().IsAlive())
+            target.GetComponent<Health>().Damage(10);
+    }
 
+#warning BLOOD ANIM
     void TakeDamage()
     {
         anim.SetTrigger("TakeDamage");
