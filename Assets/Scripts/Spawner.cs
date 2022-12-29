@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Opsive.UltimateCharacterController.Traits;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Spawner : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Spawner : MonoBehaviour
 
     public int killedZombies { get; private set; } = 0;
     private List<GameObject> spawnedZombies = new();
-    private int currentWave;
+    public int currentWave { get; set; }
     private SpawnState state = SpawnState.Counting;
 
     private void Start()
@@ -39,7 +40,8 @@ public class Spawner : MonoBehaviour
             Debug.Log("Spawning");
             if (state != SpawnState.Spawning)
             {
-                StartCoroutine(SpawnWave(waves[currentWave]));
+                if (currentWave < waves.Count) 
+                    StartCoroutine(SpawnWave(waves[currentWave]));
             }
 
         }
@@ -63,6 +65,7 @@ public class Spawner : MonoBehaviour
     {
         var newZombie = Instantiate(zombies[Random.Range(0, zombies.Count)],
                 spawners[Random.Range(0, spawners.Count)].transform.position, Quaternion.identity);
+        newZombie.GetComponent<NavMeshAgent>().enabled = true;
         Debug.Log(currentWave + " spawned");
         spawnedZombies.Add(newZombie);
     }

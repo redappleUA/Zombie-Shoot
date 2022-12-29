@@ -3,6 +3,8 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 using System.Collections.Generic;
+using Cursor = UnityEngine.Cursor;
+using System.Collections;
 
 public class FinishScreen : MonoBehaviour
 {
@@ -18,11 +20,14 @@ public class FinishScreen : MonoBehaviour
     private Score scorePoint;
     private GameOverScreen gameOverScreen;
 
+    private AudioSource clip;
+
     private void Awake()
     {
+        clip = GetComponent<AudioSource>();
         gameObject.SetActive(false);
         scorePoint = FindObjectOfType<Score>();
-        gameOverScreen = FindObjectOfType<GameOverScreen>();
+        gameOverScreen = FindObjectOfType<GameOverScreen>(true);
     }
 
     private void Start() => isFinished = false;
@@ -32,6 +37,8 @@ public class FinishScreen : MonoBehaviour
         gameOverScreen.gameObject.SetActive(false);
         gameObject.SetActive(true);
         isFinished = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
 
         var root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -41,7 +48,7 @@ public class FinishScreen : MonoBehaviour
         highScore = root.Q<Label>("HighScore");
 
         nextButton.clicked += NextButtonPressed;
-        exitButton.clicked += delegate () { GameOverScreen.ExitButtonPressed(); };
+        exitButton.clicked += ExitButtonPressed;
 
         score.text = "Score: " + scorePoint.ScorePoint.ToString();
         score.style.display = DisplayStyle.Flex;
@@ -55,7 +62,19 @@ public class FinishScreen : MonoBehaviour
 
     public void NextButtonPressed()
     {
+        clip.Play();
+        StartCoroutine(ButtonClip());
         Time.timeScale = 1;
         SceneManager.LoadScene("Game");
+    }
+
+    public void ExitButtonPressed()
+    {
+        Application.Quit();
+    }
+
+    IEnumerator ButtonClip()
+    {
+        yield return new WaitUntil(() => !clip.isPlaying);
     }
 }

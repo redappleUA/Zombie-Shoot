@@ -6,6 +6,9 @@ using UnityEngine.AI;
 
 public class ZombieController : MonoBehaviour
 {
+    [SerializeField] AudioClip hitAudio;
+    [SerializeField] List<AudioClip> runAudio = new();
+
     private NavMeshAgent agent = null;
     private Transform target;
     private Animator anim;
@@ -16,8 +19,12 @@ public class ZombieController : MonoBehaviour
     private readonly float[] attackAnim = { 0, .25f, .75f, 1 };
     private float timeOfLastAttack = 0;
     private bool hasStopped = false;
+
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         z_health = GetComponent<Health>();
@@ -37,49 +44,43 @@ public class ZombieController : MonoBehaviour
         z_lastHealth = z_health.HealthValue;
     }
 
-#warning FIX RAYCAST
     private void MoveToTarget()
     {
         float stopLength = Vector3.Distance(target.position, transform.position);
 
-        // Cast a ray from the AI's position in the direction it is facing
-        Ray ray = new(transform.position, transform.forward);
-
-        // Transform the ray from world space to local space
-        ray = new Ray(transform.InverseTransformPoint(ray.origin), transform.InverseTransformDirection(ray.direction));
-
-        if (Physics.Raycast(ray, out var hit))
+        if (stopLength <= agent.stoppingDistance)
         {
-            if (stopLength <= agent.stoppingDistance)
+            if (m_health.HealthValue != 0)
             {
-                if (m_health.HealthValue != 0)
+                if (!hasStopped)
                 {
-                    if (!hasStopped)
-                    {
-                        timeOfLastAttack = Time.time;
-                        hasStopped = true;
-                    }
-
-                    if (timeOfLastAttack + 2 <= Time.time)
-                    {
-                        if (hasStopped)
-                            hasStopped = false;
-
-                        //if (hit.collider.CompareTag("Player"))
-                            Attack();
-                    }
+                    timeOfLastAttack = Time.time;
+                    hasStopped = true;
                 }
-                else
+
+                if (timeOfLastAttack + 2 <= Time.time)
                 {
-                    anim.SetFloat("Move", 0f, .2f, Time.fixedDeltaTime);
+                    if (hasStopped)
+                        hasStopped = false;
+                    Attack();
                 }
             }
             else
             {
-                agent.SetDestination(target.position);
-                anim.SetFloat("Move", 1, .2f, Time.fixedDeltaTime);
+                anim.SetFloat("Move", 0f, .2f, Time.fixedDeltaTime);
             }
         }
+        else
+        {
+            agent.SetDestination(target.position);
+            anim.SetFloat("Move", 1, .2f, Time.fixedDeltaTime);
+            
+            if (!audioSource.isPlaying && Random.value > .5f && z_health.IsAlive())
+            {
+                audioSource.clip = runAudio[Random.Range(0, runAudio.Count)];
+                audioSource.Play();
+            }       
+        } 
 
     }
 
@@ -101,7 +102,15 @@ public class ZombieController : MonoBehaviour
     void TakeDamage()
     {
         transform.Find("FX_BloodSplat_01").Rotate(new Vector3(0, Random.Range(0, 360), 0));
+
         var blood = GetComponentInChildren<ParticleSystem>();
         blood.Play();
+
+        audioSource.clip = hitAudio;
+        if (!audioSource.isPlaying && z_health.IsAlive())
+        {
+            audioSource.Play();
+        }
+
     }
 }

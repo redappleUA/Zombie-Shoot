@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/main.uss?fileID=7433441132597879392&amp;guid=a16aea11c42239e499967391fb6151ea&amp;type=3#main" />
+    <ui:VisualElement name="Screen" style="height: 100%; justify-content: center; align-items: center; border-top-left-radius: 3%; border-bottom-left-radius: 1%; border-top-right-radius: 3%; border-bottom-right-radius: 20%;">
+        <ui:Label display-tooltip-when-elided="true" enable-rich-text="false" name="Name" text="ZOMBIE SHOOT" class="score" style="width: auto; height: 13%; font-size: 53%; color: rgb(137, 248, 229); -unity-font-definition: none; -unity-font: url(&apos;project://database/Assets/GUI%20PRO%20Kit%20-%20Sci-Fi%20Survival/ResourcesData/Fonts/NEXON%20Football%20Gothic%20L.otf?fileID=12800000&amp;guid=bb8df83ab4c42432eb3ada3f28c62baa&amp;type=3#NEXON Football Gothic L&apos;);" />
+        <ui:VisualElement name="ButtonBox" class="button-box" style="align-items: center; justify-content: center; background-image: url(&apos;project://database/Assets/GUI%20PRO%20Kit%20-%20Sci-Fi%20Survival/ResourcesData/Sprite/Component/Frame_Demo/Frame_BannerFrame03_Navy1.png?fileID=21300000&amp;guid=e8d0f5f5f9cad4d7a9ab9ca87c52f10a&amp;type=3#Frame_BannerFrame03_Navy1&apos;); width: 50%; height: 60%; background-color: rgba(53, 52, 52, 0.72);">
+            <ui:Button display-tooltip-when-elided="true" name="MusicButton" class="pause-button" style="translate: -504% -149%;">
+                <ui:VisualElement style="background-image: url(&apos;project://database/Assets/GUI%20PRO%20Kit%20-%20Sci-Fi%20Survival/ResourcesData/Sprite/Demo/Demo_Icon/Icon_PictoIcon_Sound.png?fileID=2800000&amp;guid=54eb3fe7b943a426981bc62284504ff1&amp;type=3#Icon_PictoIcon_Sound&apos;); width: 69%; height: 75%; translate: 4px 6px;" />
+            </ui:Button>
+            <ui:Button text="Play" display-tooltip-when-elided="true" name="PlayButton" enable-rich-text="false" class="just-button" style="font-size: 14%; translate: 0 -18%;" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="ExitButton" class="just-button" style="font-size: 14%; translate: 0 -18%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    private static GameObject player;
+    private GameObject player;
     private Spawner spawner;
 
-    private static GameOverScreen gameOverScreen;
+    private GameOverScreen gameOverScreen;
     private FinishScreen finishScreen;
     private PauseScreen pauseScreen;
     private bool isOpened = false;
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
             gameOverScreen.OpenGameOverScreen();
             isOpened = true;
         }
-        if (spawner.waves.Count == 0 && isOpened == false)
+        if (spawner.waves.Count == spawner.currentWave && isOpened == false)
         {
             finishScreen.OpenFinishScreen();
             isOpened = true;
