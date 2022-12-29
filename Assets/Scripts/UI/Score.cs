@@ -15,15 +15,7 @@ public class Score : MonoBehaviour
     /// <summary>
     /// the Score
     /// </summary>
-    public int ScorePoint 
-    { 
-        get 
-        { 
-            if(killedCount.killedZombies.Count != 0)
-                return killedCount.killedZombies.Count; 
-            else return 0;
-        } 
-    }
+    public int ScorePoint => killedCount.killedZombies;
 
     void Start()
     {

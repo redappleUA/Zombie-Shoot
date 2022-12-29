@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private List<GameObject> zombies = new List<GameObject>();
     public List<Wave> waves = new ();
 
-    public List<GameObject> killedZombies { get; private set; } = new();
+    public int killedZombies { get; private set; } = 0;
     private List<GameObject> spawnedZombies = new();
     private int currentWave;
     private SpawnState state = SpawnState.Counting;
@@ -69,21 +69,16 @@ public class Spawner : MonoBehaviour
 
     bool EnemiesAreDead()
     {
-        int i = 0;
-        foreach(var zombie in spawnedZombies)
+        for (int i = 0; i < spawnedZombies.Count; i++)
         {
-            if (!zombie.GetComponent<Health>().IsAlive())
+            if (!spawnedZombies[i].GetComponent<Health>().IsAlive())
             {
-                i++;
-                foreach(var zombie2 in killedZombies)
-                {
-                    if(zombie != zombie2) 
-                        killedZombies.Add(zombie);
-                }
+                spawnedZombies.RemoveAt(i);
+                killedZombies++;
+                Debug.LogWarning("Dead");
             }
-            else return false;
+            else  return false;
         }
-        Debug.LogWarning("Dead");
         spawnedZombies.Clear();
         return true;
     }
@@ -91,6 +86,7 @@ public class Spawner : MonoBehaviour
     private void ComleteWave()
     {   
         waveCountdown = timeBetweenWaves;
+        killedZombies++;
 
         if (currentWave + 1 > waves.Count)
         {

@@ -98,9 +98,10 @@ public class ZombieController : MonoBehaviour
             target.GetComponent<Health>().Damage(10);
     }
 
-#warning BLOOD ANIM
     void TakeDamage()
     {
-        anim.SetTrigger("TakeDamage");
+        transform.Find("FX_BloodSplat_01").Rotate(new Vector3(0, Random.Range(0, 360), 0));
+        var blood = GetComponentInChildren<ParticleSystem>();
+        blood.Play();
     }
 }

@@ -12,21 +12,29 @@ public class UIManager : MonoBehaviour
     private static GameOverScreen gameOverScreen;
     private FinishScreen finishScreen;
     private PauseScreen pauseScreen;
+    private bool isOpened = false;
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         spawner = FindObjectOfType<Spawner>();
 
-        gameOverScreen = FindObjectOfType<GameOverScreen>();
-        finishScreen = FindObjectOfType<FinishScreen>();
-        pauseScreen = FindObjectOfType<PauseScreen>();
+        gameOverScreen = FindObjectOfType<GameOverScreen>(true);
+        finishScreen = FindObjectOfType<FinishScreen>(true);
+        pauseScreen = FindObjectOfType<PauseScreen>(true);
     }
 
     private void FixedUpdate()
     {
-        if (!player.GetComponent<Health>().IsAlive()) 
+        if (!player.GetComponent<Health>().IsAlive() && isOpened == false)
+        {
             gameOverScreen.OpenGameOverScreen();
-        if (spawner.waves.Count == 0) finishScreen.OpenFinishScreen();
-        if (Input.GetKeyDown(KeyCode.Tilde)) { pauseScreen.OpenPauseScreen(); }
+            isOpened = true;
+        }
+        if (spawner.waves.Count == 0 && isOpened == false)
+        {
+            finishScreen.OpenFinishScreen();
+            isOpened = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L)) pauseScreen.OpenPauseScreen();
     }
 }
